@@ -53,7 +53,7 @@ class ExpandableFabCloseButtonStyle {
 
 class _ExpandableFabLocation extends StandardFabLocation {
   final ValueNotifier<ScaffoldPrelayoutGeometry?> scaffoldGeometry =
-      ValueNotifier(null);
+  ValueNotifier(null);
 
   @override
   double getOffsetX(
@@ -98,7 +98,13 @@ class ExpandableFab extends StatefulWidget {
     this.overlayStyle,
     this.openButtonHeroTag,
     this.closeButtonHeroTag,
+    this.offsetX = 0,
+    this.offsetY = 0,
   }) : super(key: key);
+
+  final double offsetX;
+
+  final double offsetY;
 
   /// Distance from children.
   final double distance;
@@ -224,11 +230,11 @@ class ExpandableFabState extends State<ExpandableFab>
         if (geometry == null) {
           return const SizedBox.shrink();
         }
-        final x = kFloatingActionButtonMargin + geometry.minInsets.right;
+        final x = kFloatingActionButtonMargin + geometry.minInsets.right + widget.offsetX;
         final bottomContentHeight =
             geometry.scaffoldSize.height - geometry.contentBottom;
         final y = kFloatingActionButtonMargin +
-            math.max(geometry.minViewPadding.bottom, bottomContentHeight);
+            math.max(geometry.minViewPadding.bottom, bottomContentHeight) + widget.offsetY;
         if (offset != Offset(x, y)) {
           offset = Offset(x, y);
           cache = _buildButtons(offset!);
@@ -320,7 +326,7 @@ class ExpandableFabState extends State<ExpandableFab>
     final children = <Widget>[];
     final count = widget.children.length;
     final addedDistance =
-        widget.expandedFabSize == ExpandableFabSize.regular ? 8 : 0;
+    widget.expandedFabSize == ExpandableFabSize.regular ? 8 : 0;
     for (var i = 0; i < count; i++) {
       final double dir, dist;
       switch (widget.type) {
@@ -357,7 +363,7 @@ class ExpandableFabState extends State<ExpandableFab>
   Widget _buildTapToOpenFab() {
     final duration = widget.duration;
     final transformValues =
-        widget.expandedFabSize == ExpandableFabSize.regular ? 1.0 : 0.715;
+    widget.expandedFabSize == ExpandableFabSize.regular ? 1.0 : 0.715;
 
     return IgnorePointer(
       ignoring: _open,
@@ -376,27 +382,27 @@ class ExpandableFabState extends State<ExpandableFab>
           duration: duration,
           child: widget.collapsedFabSize == ExpandableFabSize.regular
               ? FloatingActionButton(
-                  heroTag: widget.openButtonHeroTag,
-                  foregroundColor: widget.foregroundColor,
-                  backgroundColor: widget.backgroundColor,
-                  onPressed: toggle,
-                  child: AnimatedRotation(
-                    duration: duration,
-                    turns: _open ? -0.5 : 0,
-                    child: widget.child,
-                  ),
-                )
+            heroTag: widget.openButtonHeroTag,
+            foregroundColor: widget.foregroundColor,
+            backgroundColor: widget.backgroundColor,
+            onPressed: toggle,
+            child: AnimatedRotation(
+              duration: duration,
+              turns: _open ? -0.5 : 0,
+              child: widget.child,
+            ),
+          )
               : FloatingActionButton.small(
-                  heroTag: widget.openButtonHeroTag,
-                  foregroundColor: widget.foregroundColor,
-                  backgroundColor: widget.backgroundColor,
-                  onPressed: toggle,
-                  child: AnimatedRotation(
-                    duration: duration,
-                    turns: _open ? -0.5 : 0,
-                    child: widget.child,
-                  ),
-                ),
+            heroTag: widget.openButtonHeroTag,
+            foregroundColor: widget.foregroundColor,
+            backgroundColor: widget.backgroundColor,
+            onPressed: toggle,
+            child: AnimatedRotation(
+              duration: duration,
+              turns: _open ? -0.5 : 0,
+              child: widget.child,
+            ),
+          ),
         ),
       ),
     );

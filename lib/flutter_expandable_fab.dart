@@ -102,9 +102,9 @@ class ExpandableFab extends StatefulWidget {
     this.offsetY = 0,
   }) : super(key: key);
 
-  final double offsetX;
+  final int offsetX;
 
-  final double offsetY;
+  final int offsetY;
 
   /// Distance from children.
   final double distance;
